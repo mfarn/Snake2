@@ -1,6 +1,7 @@
 from turtle import Turtle
 
 STARTING_POSITIONS = [(0, 0), (-20, 0), (-40, 0)]
+SNAKE_GRAVEYARD = (1000,1000)
 MOVE_DIST = 20
 UP = 90
 DOWN = 270
@@ -25,6 +26,29 @@ class Snake:
         new_segment.penup()
         new_segment.goto(position)
         self.segments.append(new_segment)
+
+    def reset(self):
+        for seg in self.segments:
+            seg.goto(SNAKE_GRAVEYARD)
+        self.segments.clear()
+        self.create_snake()
+        self.head = self.segments[0]
+
+    def is_at_wall_y(self):
+        if self.head.ycor() > 280 or self.head.ycor() < -280:
+            return True
+        return False
+
+    def is_at_wall_x(self):
+        if self.head.xcor() > 300 or self.head.xcor() < -300:
+            return True
+        return False
+
+    def go_to_other_side_x(self):
+        self.head.goto(self.head.xcor()*(-1), self.head.ycor())
+
+    def go_to_other_side_y(self):
+        self.head.goto(self.head.xcor(), self.head.ycor()*(-1))
 
     def extend(self):
         self.add_segment(self.segments[-1].position())
